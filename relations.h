@@ -36,14 +36,48 @@ private:
 	std::map<CSPairKey_t, RelationFunc_t>	m_funcs;
 };
 
-
+//4*2
 relation_t se_t_se_t(const Constraint_ptr &c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
 relation_t se_t_se_f(const Constraint_ptr &c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
 relation_t se_f_se_t(const Constraint_ptr &c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
 relation_t se_f_se_f(const Constraint_ptr &c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
-
+///s-e, e-s, 4*2
+//4*2
 relation_t se_t_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
 relation_t se_t_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
 relation_t se_f_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
 relation_t se_f_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+//4*2
+relation_t se_t_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
+relation_t se_t_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
+relation_t se_f_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
+relation_t se_f_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
+//any-se, 4*2
+//4*2
+relation_t all_t_se_t(const Constraint_ptr & c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
+relation_t all_t_se_f(const Constraint_ptr & c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
+relation_t all_f_se_t(const Constraint_ptr & c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
+relation_t all_f_se_f(const Constraint_ptr & c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f);
+//4*1
+relation_t all_t_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t all_t_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t all_f_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t all_f_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+//4*1
+relation_t any_t_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t any_t_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t any_f_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t any_f_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+//4*1
+relation_t any_t_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t any_t_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t any_f_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t any_f_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+//4*1
+relation_t all_t_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t all_t_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t all_f_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2);
+relation_t all_f_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2);
+
+
 #endif
