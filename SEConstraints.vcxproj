@@ -86,6 +86,7 @@
     <ClCompile Include="constraints.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="relations.cpp" />
+    <ClCompile Include="symvar.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

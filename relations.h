@@ -25,7 +25,7 @@ public:
 	void		add(F && f)
 	{
 		CSPairKey_t k = std::make_tuple(l1, p1, l2, p2);
-		m_funcs.insert(k, f);
+		m_funcs.insert(std::make_pair(k, f));
 	}
 protected:
 

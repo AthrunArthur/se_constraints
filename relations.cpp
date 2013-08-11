@@ -2,6 +2,7 @@
 #include <cassert>
 Relations_ptr Relations::s_pInstance(nullptr);
 
+using namespace std::placeholders;
 Relations::Relations()
 	: m_funcs()
 {
@@ -89,6 +90,44 @@ void Relations::init()
 	add<end, false, all, false>(std::bind(se_f_all_f, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
 		return s1->startWith(s2);}));
 	////////start-end(4), any-se(8), always overlap
+
+	add<all, true, start, true>(std::bind(all_t_se_t, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
+		return s1->startWith(s2);}));
+	add<all, true, start, false>(std::bind(all_t_se_f, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
+		return s1->startWith(s2);}));
+	add<all, false, start, true>(std::bind(all_f_se_t, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
+		return s1->startWith(s2);}));
+	add<all, false, start, false>(std::bind(all_f_se_f, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
+		return s1->startWith(s2);}));
+
+	add<all, true, end, true>(std::bind(all_t_se_t, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
+		return s1->endWith(s2);}));
+	add<all, true, end, false>(std::bind(all_t_se_f, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
+		return s1->endWith(s2);}));
+	add<all, false, end, true>(std::bind(all_f_se_t, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
+		return s1->endWith(s2);}));
+	add<all, false, end, false>(std::bind(all_f_se_f, _1, _2, [](const SymVar_ptr & s1, const SymVar_ptr & s2){
+		return s1->endWith(s2);}));
+
+	add<all, true, any, true>(all_t_any_t);
+	add<all, true, any, false>(all_t_any_f);
+	add<all, false, any, true>(all_f_any_t);
+	add<all, false, any, false>(all_f_any_f);
+
+	add<any, true, all, true>(any_t_all_t);
+	add<any, true, all, false>(any_t_all_f);
+	add<any, false, all, true>(any_f_all_t);
+	add<any, false, all, false>(any_f_all_f);
+
+	add<any, true, any, true>(any_t_any_t);
+	add<any, true, any, false>(any_t_any_f);
+	add<any, false, any, true>(any_f_any_t);
+	add<any, false, any, false>(any_f_any_f);
+
+	add<all, true, all, true>(all_t_all_t);
+	add<all, true, all, false>(all_t_all_f);
+	add<all, false, all, true>(all_f_all_t);
+	add<all, false, all, false>(all_f_all_f);
 }
 
 relation_t se_t_se_t(const Constraint_ptr &c1, const Constraint_ptr & c2, std::function<bool (const SymVar_ptr &, const SymVar_ptr &)> f)
@@ -226,4 +265,84 @@ relation_t all_f_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2)
 relation_t all_f_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2)
 {
 	return overlap;
+}
+
+
+relation_t any_t_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(!c2->sub()->contains(c1->sub()))
+		return empty;
+	return overlap;
+}
+relation_t any_t_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	return overlap;
+}
+relation_t any_f_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(c2->sub()->contains(c1->sub()))
+		return empty;
+	return overlap;
+}
+relation_t any_f_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	return overlap;
+}
+//4*1
+relation_t any_t_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(c1->sub()->contains(c2->sub()))
+		return imply;
+	else
+		return overlap;
+}
+relation_t any_t_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(c1->sub()->contains(c2->sub()) ||
+		c2->sub()->contains(c1->sub()))
+		return empty;
+	else
+		return overlap;
+}
+relation_t any_f_any_t(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(c1->sub()->contains(c2->sub()) ||
+		c2->sub()->contains(c1->sub()))
+		return empty;
+	else
+		return overlap;
+}
+relation_t any_f_any_f(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(c1->sub()->contains(c2->sub()))
+		return imply;
+	else
+		return overlap;
+}
+//4*1
+relation_t all_t_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(c1->sub()->contains(c2->sub()) && c2->sub()->contains(c1->sub()))
+		return imply;
+	else
+		return empty;
+}
+relation_t all_t_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(!c1->sub()->contains(c2->sub()) || !c2->sub()->contains(c1->sub()))
+		return imply;
+	return empty;
+}
+relation_t all_f_all_t(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(!c1->sub()->contains(c2->sub()) || !c2->sub()->contains(c1->sub()))
+		return imply;
+	return empty;
+}
+relation_t all_f_all_f(const Constraint_ptr & c1, const Constraint_ptr & c2)
+{
+	if(c1->sub()->contains(c2->sub()) && c2->sub()->contains(c1->sub()))
+		return imply;
+	else
+		return overlap;
 }

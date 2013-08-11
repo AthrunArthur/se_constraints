@@ -18,6 +18,9 @@ enum relation_t{
 	overlap
 };
 
+std::string str(loc_t l);
+std::string str(relation_t r);
+
 typedef bool pn_t;
 
 class Constraint;
@@ -43,16 +46,21 @@ protected:
 };
 
 
+Constraint_ptr make_constraint(const SymVar_ptr & h, const std::string & str, loc_t l, pn_t p);
+
+/*
 template <class T>
-Constraint_ptr make_constraint(const SymVar h, T s, loc_t l, pn_t p)
+Constraint_ptr make_constraint(const SymVar_ptr & h, T s, loc_t l, pn_t p)
 {
 	return std::make_shared<Constraint>(h, s, l, p);
-}
+}*/
+
+
 
 class PathConstraints
 {
 public:
-	PathConstraints();
+	PathConstraints(){};
 
 	template<class T>
 	void	addConstraint(const SymVar & h, T s, loc_t l, pn_t p)
