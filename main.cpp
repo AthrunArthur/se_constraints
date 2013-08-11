@@ -47,6 +47,18 @@ int main(int argc, char *argv[])
 	auto c2 = make_constraint(s1, "TXYZ", end, false);
 	r = pc.checkCondition(c2);
 	std::cout<<"should be Overlap: "<<str(r)<<std::endl;
+
+	auto c3 = make_constraint(s1, "abc", any, true);
+	r = pc.checkCondition(c3);
+	std::cout<<"should be Empty: "<<str(r)<<std::endl;
+
+	auto c4 = make_constraint(s1, "abcdefg", any, false);
+	r = pc.checkCondition(c4);
+	std::cout<<"should be Overlap: "<<str(r)<<std::endl;
+
+	auto c5 = make_constraint(s1, "abc", any, false);
+	r = pc.checkCondition(c5);
+	std::cout<<"should be Imply: "<<str(r)<<std::endl;
 	return 0;
 }
 
